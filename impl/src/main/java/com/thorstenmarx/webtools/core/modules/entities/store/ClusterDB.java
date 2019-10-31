@@ -31,11 +31,11 @@ public class ClusterDB<T> implements DB<T>, MessageService.MessageListener{
 		this.wrapped = wrapped;
 		this.cluster = cluster;
 		
-		cluster.getMessageService().registerMessageListener(this);
+		cluster.getRAFTMessageService().registerMessageListener(this);
 	}
 	
 	public void close () {
-		cluster.getMessageService().unregisterMessageListener(this);
+		cluster.getRAFTMessageService().unregisterMessageListener(this);
 	}
 	
 	@Override
@@ -47,7 +47,7 @@ public class ClusterDB<T> implements DB<T>, MessageService.MessageListener{
 		message.setType(ENTITIES_ADD);
 		message.setPayload(gson.toJson(payload));
 		try {	
-			cluster.getMessageService().publish(message);
+			cluster.getRAFTMessageService().publish(message);
 			return true;
 		} catch (IOException ex) {
 			LOGGER.error("", ex);
@@ -64,7 +64,7 @@ public class ClusterDB<T> implements DB<T>, MessageService.MessageListener{
 		message.setType(ENTITIES_BATCH);
 		message.setPayload(gson.toJson(payload));
 		try {	
-			cluster.getMessageService().publish(message);
+			cluster.getRAFTMessageService().publish(message);
 			return true;
 		} catch (IOException ex) {
 			LOGGER.error("", ex);
@@ -81,7 +81,7 @@ public class ClusterDB<T> implements DB<T>, MessageService.MessageListener{
 		message.setType(ENTITIES_CLEAR);
 		message.setPayload(gson.toJson(payload));
 		try {	
-			cluster.getMessageService().publish(message);
+			cluster.getRAFTMessageService().publish(message);
 		} catch (IOException ex) {
 			LOGGER.error("", ex);
 		}
@@ -101,7 +101,7 @@ public class ClusterDB<T> implements DB<T>, MessageService.MessageListener{
 		message.setType(ENTITIES_DELETE);
 		message.setPayload(gson.toJson(payload));
 		try {	
-			cluster.getMessageService().publish(message);
+			cluster.getRAFTMessageService().publish(message);
 		} catch (IOException ex) {
 			LOGGER.error("", ex);
 		}
