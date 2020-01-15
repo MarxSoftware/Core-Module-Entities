@@ -41,8 +41,7 @@ public class CoreModuleEntitiesModuleLifeCycle extends ModuleLifeCycleExtension 
 	
 	@Override
 	public void activate() {
-		entities = new EntitiesImpl(configuration.getDataDir(), ((CoreModuleContext)getContext()).getCluster());
-//		entities = new EntitiesImpl(((CoreModuleContext)getContext()).getDataPath());
+		entities = new EntitiesImpl(configuration.getDataDir());
         entities.open();
 		
 		getContext().serviceRegistry().register(Entities.class, entities);

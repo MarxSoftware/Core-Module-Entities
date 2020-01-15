@@ -25,7 +25,6 @@ import com.thorstenmarx.webtools.api.cluster.Cluster;
 import com.thorstenmarx.webtools.api.entities.Entities;
 import com.thorstenmarx.webtools.api.entities.Serializer;
 import com.thorstenmarx.webtools.api.entities.Store;
-import com.thorstenmarx.webtools.core.modules.entities.store.ClusterDB;
 import com.thorstenmarx.webtools.core.modules.entities.store.H2DB;
 
 import java.io.File;
@@ -37,24 +36,13 @@ import java.io.File;
 public class EntitiesImpl implements AutoCloseable, Entities {
 
 	private H2DB db;
-	private ClusterDB cluster_db;
 	private File path;
-	private final Cluster cluster;
 
 	public EntitiesImpl(final File path) {
-		this(path, null);
-	}
-
-	public EntitiesImpl(final File path, final Cluster cluster) {
 		this.path = new File(path, "entities");
-		this.cluster = cluster;
 		if (!path.exists()) {
 			path.mkdirs();
 		}
-	}
-
-	private boolean isCluster() {
-		return cluster != null;
 	}
 
 	@Override
@@ -62,19 +50,12 @@ public class EntitiesImpl implements AutoCloseable, Entities {
 		if (db != null) {
 			db.close();
 		}
-		if (cluster_db != null) {
-			cluster_db.close();
-		}
 	}
 
 	public void open() {
 		if (db == null) {
 			db = new H2DB(path);
 			db.open();
-
-			if (isCluster()) {
-				cluster_db = new ClusterDB(db, cluster);
-			}
 		}
 	}
 
@@ -83,9 +64,6 @@ public class EntitiesImpl implements AutoCloseable, Entities {
 		if (!clazz.isAnnotationPresent(com.thorstenmarx.webtools.api.entities.annotations.Entity.class)) {
 			throw new IllegalArgumentException("Entity annotation not present!");
 		}
-		if (isCluster()) {
-			return new StoreImpl<>(cluster_db, clazz, new GsonSerializer<>(clazz));
-		}
 		return new StoreImpl<>(db, clazz, new GsonSerializer<>(clazz));
 	}
 
@@ -93,9 +71,6 @@ public class EntitiesImpl implements AutoCloseable, Entities {
 	public <T> Store<T> store(final Class<T> clazz, final Serializer<T> serializer) {
 		if (!clazz.isAnnotationPresent(com.thorstenmarx.webtools.api.entities.annotations.Entity.class)) {
 			throw new IllegalArgumentException("Entity annotation not present!");
-		}
-		if (isCluster()) {
-			return new StoreImpl<>(cluster_db, clazz, serializer);
 		}
 		return new StoreImpl<>(db, clazz, serializer);
 	}
