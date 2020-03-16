@@ -98,8 +98,6 @@ public class AnnotationHelper<T> {
 			if (field.isAnnotationPresent(com.thorstenmarx.webtools.api.entities.annotations.Field.class)) {
 				if (field.getType().isAssignableFrom(String.class) && field.getAnnotation(Field.class).key() == true) {
 					return field;
-				} else {
-					throw new IllegalArgumentException("index field must be of type string");
 				}
 			}
 		}
