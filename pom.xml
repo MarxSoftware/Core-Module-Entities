@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.thorstenmarx.webtools.core.modules.entities</groupId>
 	<artifactId>entities</artifactId>
-	<version>1.5.0</version>
+	<version>1.6.0</version>
 	<packaging>pom</packaging>
 
 	<name>WebTools Core Modules - Entities</name>
@@ -94,12 +94,17 @@
 			<dependency>
 				<groupId>org.apache.lucene</groupId>
 				<artifactId>lucene-core</artifactId>
-				<version>8.4.1</version>
+				<version>8.5.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.lucene</groupId>
 				<artifactId>lucene-analyzers-common</artifactId>
-				<version>8.4.1</version>
+				<version>8.5.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-backward-codecs</artifactId>
+				<version>8.5.0</version>
 			</dependency>
 
 			<dependency>

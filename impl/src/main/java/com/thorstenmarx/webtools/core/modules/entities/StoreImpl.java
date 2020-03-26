@@ -91,6 +91,9 @@ public class StoreImpl<T> implements Store<T> {
 	@Override
 	public T get(final String id) {
 		DBEntity entity = db.get(id);
+		if (entity == null) {
+			return null;
+		}
 		final T instance = fromJSON(entity);
 		return instance;
 	}
