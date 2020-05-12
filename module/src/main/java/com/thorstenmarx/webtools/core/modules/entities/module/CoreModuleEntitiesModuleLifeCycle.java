@@ -15,36 +15,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.thorstenmarx.webtools.core.modules.configuration.module;
-
+package com.thorstenmarx.webtools.core.modules.entities.module;
 
 import com.thorstenmarx.modules.api.ModuleLifeCycleExtension;
 import com.thorstenmarx.modules.api.annotation.Extension;
-import com.thorstenmarx.webtools.api.CoreModuleContext;
 import com.thorstenmarx.webtools.api.entities.Entities;
 import com.thorstenmarx.webtools.core.modules.entities.EntitiesImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  *
  * @author marx
-*/
+ */
 @Extension(ModuleLifeCycleExtension.class)
 public class CoreModuleEntitiesModuleLifeCycle extends ModuleLifeCycleExtension {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CoreModuleEntitiesModuleLifeCycle.class);
-	
+
 	public static EntitiesImpl entities;
 
-	
 	@Override
 	public void activate() {
-		entities = new EntitiesImpl(configuration.getDataDir());
-        entities.open();
-		
-		getContext().serviceRegistry().register(Entities.class, entities);
+		try {
+			if (entities == null) {
+				entities = new EntitiesImpl(configuration.getDataDir());
+				entities.open();
+
+				getContext().serviceRegistry().register(Entities.class, entities);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	@Override
@@ -55,6 +58,7 @@ public class CoreModuleEntitiesModuleLifeCycle extends ModuleLifeCycleExtension 
 		} catch (Exception ex) {
 			LOGGER.error("", ex);
 		}
+		entities = null;
 	}
 
 	@Override
@@ -62,8 +66,4 @@ public class CoreModuleEntitiesModuleLifeCycle extends ModuleLifeCycleExtension 
 
 	}
 
-	
-	
-	
-	
 }

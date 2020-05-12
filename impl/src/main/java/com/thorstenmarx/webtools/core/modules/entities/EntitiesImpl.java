@@ -21,7 +21,6 @@ package com.thorstenmarx.webtools.core.modules.entities;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-import com.thorstenmarx.webtools.api.cluster.Cluster;
 import com.thorstenmarx.webtools.api.entities.Entities;
 import com.thorstenmarx.webtools.api.entities.Serializer;
 import com.thorstenmarx.webtools.api.entities.Store;
