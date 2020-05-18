@@ -47,6 +47,7 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.SearcherFactory;
 import org.apache.lucene.search.SearcherManager;
@@ -114,6 +115,7 @@ public class MVStoreDB implements DB<BooleanQuery> {
 				H2DB h2DB = new H2DB(entitiesFolder);
 				h2DB.open();
 				BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
+				queryBuilder.add(new MatchAllDocsQuery(), BooleanClause.Occur.MUST);
 				List<DBEntity> entities = h2DB.query(queryBuilder.build());
 
 				LOGGER.debug(String.format("found %d entities, start migration", entities.size()));
