@@ -33,7 +33,6 @@ import com.thorstenmarx.webtools.api.entities.criteria.restrictions.LongRestrict
 import com.thorstenmarx.webtools.api.entities.criteria.restrictions.StringRestriction;
 import com.thorstenmarx.webtools.core.modules.entities.annotations.AnnotationHelper;
 import com.thorstenmarx.webtools.core.modules.entities.store.DB;
-import com.thorstenmarx.webtools.core.modules.entities.store.H2DB;
 import com.thorstenmarx.webtools.core.modules.entities.store.DBEntity;
 import java.io.IOException;
 import java.util.ArrayList;

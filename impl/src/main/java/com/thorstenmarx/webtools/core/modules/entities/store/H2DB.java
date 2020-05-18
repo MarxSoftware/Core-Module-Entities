@@ -66,6 +66,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author marx
  */
+@Deprecated(since = "1.6.0")
 public class H2DB implements DB<BooleanQuery> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(H2DB.class);
@@ -86,7 +87,6 @@ public class H2DB implements DB<BooleanQuery> {
 		try {
 			Class.forName("org.h2.Driver");
 			File dbFile = new File(path, "store.db");
-//			pool = JdbcConnectionPool.create("jdbc:h2:" + path + "store.db", "sa", "sa");
 			pool = JdbcConnectionPool.create("jdbc:h2:" + dbFile.getAbsolutePath(), "sa", "sa");
 			init();
 
@@ -175,7 +175,7 @@ public class H2DB implements DB<BooleanQuery> {
 			TopDocs topDocs = searcher.search(luceneQuery, Integer.MAX_VALUE);
 
 			for (final ScoreDoc doc : topDocs.scoreDocs) {
-				DBEntity entity = get(searcher.doc(doc.doc).get("db_id"));
+				DBEntity entity = get(searcher.doc(doc.doc).get("db_id"), null);
 				if (entity != null) {
 					result.add(entity);
 				}
@@ -188,7 +188,7 @@ public class H2DB implements DB<BooleanQuery> {
 	}
 
 	@Override
-	public DBEntity get(final String id) {
+	public DBEntity get(final String id, final String type) {
 		try (Connection connection = pool.getConnection()) {
 
 			String statement = "SELECT * FROM entities WHERE db_id = ?";
@@ -347,7 +347,7 @@ public class H2DB implements DB<BooleanQuery> {
 	 * @param id
 	 */
 	@Override
-	public void delete(final String id) {
+	public void delete(final String id, final String type) {
 		try (Connection connection = pool.getConnection();
 				PreparedStatement st = connection.prepareStatement("DELETE FROM entities WHERE db_id = ?")) {
 

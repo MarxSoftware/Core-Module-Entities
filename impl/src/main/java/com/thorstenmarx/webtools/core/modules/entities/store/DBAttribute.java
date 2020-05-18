@@ -1,5 +1,7 @@
 package com.thorstenmarx.webtools.core.modules.entities.store;
 
+import java.io.Serializable;
+
 /*-
  * #%L
  * webtools-entities
@@ -27,7 +29,7 @@ package com.thorstenmarx.webtools.core.modules.entities.store;
  *
  * @author marx
  */
-public class DBAttribute extends Identifiable {
+public class DBAttribute extends Identifiable implements Serializable {
 	public enum TYPE {
 		INTEGER, FLOAT, DOUBLE, STRING, BOOLEAN, LONG;
 		

@@ -24,7 +24,8 @@ package com.thorstenmarx.webtools.core.modules.entities;
 import com.thorstenmarx.webtools.api.entities.Entities;
 import com.thorstenmarx.webtools.api.entities.Serializer;
 import com.thorstenmarx.webtools.api.entities.Store;
-import com.thorstenmarx.webtools.core.modules.entities.store.H2DB;
+import com.thorstenmarx.webtools.core.modules.entities.store.DB;
+import com.thorstenmarx.webtools.core.modules.entities.store.MVStoreDB;
 
 import java.io.File;
 
@@ -34,27 +35,28 @@ import java.io.File;
  */
 public class EntitiesImpl implements AutoCloseable, Entities {
 
-	private H2DB db;
+	private DB db;
 	private File path;
 
 	public EntitiesImpl(final File path) {
-		this.path = new File(path, "entities");
-		if (!path.exists()) {
-			path.mkdirs();
+		this.path = path;
+		if (!this.path.exists()) {
+			this.path.mkdirs();
 		}
 	}
 
 	@Override
 	public void close() throws Exception {
 		if (db != null) {
-			db.close();
+			((MVStoreDB)db).close();
 		}
 	}
 
 	public void open() {
 		if (db == null) {
-			db = new H2DB(path);
-			db.open();
+//			db = new H2DB(path);
+			db = new MVStoreDB(path);
+			((MVStoreDB)db).open();
 		}
 	}
 

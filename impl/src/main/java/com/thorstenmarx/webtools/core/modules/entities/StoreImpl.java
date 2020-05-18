@@ -24,7 +24,6 @@ package com.thorstenmarx.webtools.core.modules.entities;
 
 import com.thorstenmarx.webtools.api.entities.Store;
 import com.thorstenmarx.webtools.api.entities.Result;
-import com.google.gson.Gson;
 import com.thorstenmarx.webtools.api.entities.Serializer;
 import com.thorstenmarx.webtools.core.modules.entities.annotations.AnnotationHelper;
 import com.thorstenmarx.webtools.api.entities.annotations.Entity;
@@ -33,7 +32,6 @@ import com.thorstenmarx.webtools.api.model.Pair;
 import com.thorstenmarx.webtools.core.modules.entities.criteria.LuceneCriteria;
 import com.thorstenmarx.webtools.core.modules.entities.store.DB;
 import com.thorstenmarx.webtools.core.modules.entities.store.DBAttribute;
-import com.thorstenmarx.webtools.core.modules.entities.store.H2DB;
 import com.thorstenmarx.webtools.core.modules.entities.store.DBEntity;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -85,12 +83,12 @@ public class StoreImpl<T> implements Store<T> {
 
 	@Override
 	public void delete(final T entity) {
-		db.delete(annotationHelper.getId(entity));
+		db.delete(annotationHelper.getId(entity), type);
 	}
 
 	@Override
 	public T get(final String id) {
-		DBEntity entity = db.get(id);
+		DBEntity entity = db.get(id, type);
 		if (entity == null) {
 			return null;
 		}

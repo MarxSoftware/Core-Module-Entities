@@ -44,9 +44,9 @@ public interface DB<T> {
 	 *
 	 * @param id
 	 */
-	void delete(final String id);
+	void delete(final String id, final String type);
 
-	DBEntity get(final String id);
+	DBEntity get(final String id, final String type);
 
 	Result<DBEntity> list(final String type, final int offset, final int limit);
 

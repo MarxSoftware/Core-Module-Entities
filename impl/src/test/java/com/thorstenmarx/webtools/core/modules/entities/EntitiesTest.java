@@ -44,7 +44,9 @@ public class EntitiesTest {
 
 	@BeforeMethod
 	public void before() {
-		entities = new EntitiesImpl(new File("./target/db-" + System.currentTimeMillis()));
+		File file = new File("./target/db-" + System.currentTimeMillis());
+		file.mkdirs();
+		entities = new EntitiesImpl(file);
 		((EntitiesImpl) entities).open();
 	}
 

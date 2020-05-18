@@ -21,6 +21,7 @@ package com.thorstenmarx.webtools.core.modules.entities.store;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ import java.util.Map;
  *
  * @author marx
  */
-public class DBEntity extends Identifiable {
+public class DBEntity extends Identifiable implements Serializable {
 	
 	private boolean update = false;
 	
