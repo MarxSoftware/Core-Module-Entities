@@ -36,6 +36,8 @@ public interface DB<T> {
 	boolean batch(final List<DBEntity> entities);
 
 	void clear(final String type);
+	
+	void clearAll ();
 
 	int count(final String type);
 

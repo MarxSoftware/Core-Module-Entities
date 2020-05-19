@@ -51,6 +51,7 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.SearcherFactory;
 import org.apache.lucene.search.SearcherManager;
@@ -129,6 +130,20 @@ public class H2DB implements DB<BooleanQuery> {
 			st.execute();
 
 			writer.deleteDocuments(new Term("db_type", type));
+			nrt_manager.maybeRefresh();
+			connection.commit();
+		} catch (SQLException | IOException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+	@Override
+	public void clearAll() {
+		try (Connection connection = pool.getConnection();
+				PreparedStatement st = connection.prepareStatement("DELETE FROM entities")) {
+
+			st.execute();
+
+			writer.deleteDocuments(new MatchAllDocsQuery());
 			nrt_manager.maybeRefresh();
 			connection.commit();
 		} catch (SQLException | IOException ex) {

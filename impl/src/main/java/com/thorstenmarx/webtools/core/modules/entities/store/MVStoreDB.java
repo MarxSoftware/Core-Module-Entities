@@ -25,8 +25,6 @@ import com.thorstenmarx.webtools.api.entities.Result;
 import com.thorstenmarx.webtools.core.modules.entities.DefaultResult;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -146,7 +144,24 @@ public class MVStoreDB implements DB<BooleanQuery> {
 		} catch (IOException ex) {
 			LOGGER.error("", ex);
 		}
+	}
+	@Override
+	public void clearAll() {
 
+		try {
+			store.getMapNames().forEach((map_name) -> {
+				if (map_name.startsWith("entities_")) {
+					store.removeMap(map_name);
+				}
+			});
+			writer.deleteDocuments(new MatchAllDocsQuery());
+			writer.commit();
+			store.commit();
+			nrt_manager.maybeRefresh();
+
+		} catch (IOException ex) {
+			LOGGER.error("", ex);
+		}
 	}
 
 	private static String createTypeMapName(final String type) {
