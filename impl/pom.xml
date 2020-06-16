@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.thorstenmarx.webtools.core.modules.entities</groupId>
 		<artifactId>entities</artifactId>
-		<version>1.6.0</version>
+		<version>1.7.0</version>
 	</parent>
 	<artifactId>entities-impl</artifactId>
 	<packaging>jar</packaging>
