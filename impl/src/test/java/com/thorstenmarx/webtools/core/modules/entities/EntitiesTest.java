@@ -94,6 +94,18 @@ public class EntitiesTest {
 		List<Content> result = store.criteria().add(Restrictions.EQ.eq("firstname", "Thorsten")).query();
 		Assertions.assertThat(result).isNotEmpty().hasSize(1);
 	}
+	
+	@Test()
+	public void testCriteria_ISSUE_missing_id() {
+		Store<Content> store = entities.store(Content.class);
+
+		Content c = new Content().setVorname("Thorsten");
+		store.save(c);
+
+		List<Content> result = store.criteria().add(Restrictions.EQ.eq("firstname", "Thorsten")).query();
+		Assertions.assertThat(result).isNotEmpty().hasSize(1);
+		Assertions.assertThat(result.get(0).getId()).isNotEmpty();
+	}
 
 	@Test(description = "Criteria should not return a result")
 	public void testCriteria_no_result() {

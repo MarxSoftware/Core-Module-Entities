@@ -190,8 +190,10 @@ public class H2DB implements DB<BooleanQuery> {
 			TopDocs topDocs = searcher.search(luceneQuery, Integer.MAX_VALUE);
 
 			for (final ScoreDoc doc : topDocs.scoreDocs) {
-				DBEntity entity = get(searcher.doc(doc.doc).get("db_id"), null);
+				final String id = searcher.doc(doc.doc).get("db_id");
+				DBEntity entity = get(id, null);
 				if (entity != null) {
+					entity.id(id);
 					result.add(entity);
 				}
 			}
