@@ -57,38 +57,38 @@ public class DBEntity extends Identifiable implements Serializable {
 
 	
 	
-	public String version () {
+	public String getVersion () {
 		return version;
 	}
 	
-	public String content() {
+	public String getContent() {
 		return content;
 	}
 
-	public DBEntity content(String content) {
+	public DBEntity setContent(String content) {
 		this.content = content;
 		return this;
 	}
 	
 	
 
-	public Map<String, DBAttribute> attributes () {
+	public Map<String, DBAttribute> getAttributes () {
 		return attributes;
 	}
 	public void addAttribute (final DBAttribute attribute) {
 		attributes.put(attribute.name(), attribute);
 	}
 	
-	public String name() {
+	public String getName() {
 		return name;
 	}
 
-	public DBEntity name(String name) {
+	public DBEntity setName(String name) {
 		this.name = name;
 		return this;
 	}
 
-	public String type() {
+	public String getType() {
 		return type;
 	}
 	

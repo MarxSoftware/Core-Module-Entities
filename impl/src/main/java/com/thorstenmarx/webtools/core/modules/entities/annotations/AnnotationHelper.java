@@ -43,7 +43,7 @@ public class AnnotationHelper<T> {
 	public T createInstance(final DBEntity entity) {
 		T instance = newInstance();
 
-		for (final DBAttribute attribute : entity.attributes().values()) {
+		for (final DBAttribute attribute : entity.getAttributes().values()) {
 			final String name = attribute.name();
 			java.lang.reflect.Field field = findField(name);
 			if (field != null) {
@@ -69,7 +69,7 @@ public class AnnotationHelper<T> {
 
 	public void setId(final Object instance, final String id) {
 		java.lang.reflect.Field idField = findIndex(instance);
-		boolean access = idField.isAccessible();
+		boolean access = idField.canAccess(instance);
 		try {
 			idField.setAccessible(true);
 			idField.set(instance, id);

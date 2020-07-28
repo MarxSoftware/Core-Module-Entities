@@ -1,5 +1,7 @@
 package com.thorstenmarx.webtools.core.modules.entities.store;
 
+import java.io.Serializable;
+
 /*-
  * #%L
  * webtools-entities
@@ -26,15 +28,15 @@ package com.thorstenmarx.webtools.core.modules.entities.store;
  *
  * @author marx
  */
-abstract class Identifiable {
+abstract class Identifiable implements Serializable {
 
 	private String id;
 
-	public String id() {
+	public String getId() {
 		return id;
 	}
 
-	public void id(String id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	

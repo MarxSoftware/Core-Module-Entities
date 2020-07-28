@@ -193,7 +193,7 @@ public class H2DB implements DB<BooleanQuery> {
 				final String id = searcher.doc(doc.doc).get("db_id");
 				DBEntity entity = get(id, null);
 				if (entity != null) {
-					entity.id(id);
+					entity.setId(id);
 					result.add(entity);
 				}
 			}
@@ -233,9 +233,9 @@ public class H2DB implements DB<BooleanQuery> {
 		final String version = rs.getString("db_version");
 		final String content = clobToString(rs.getClob("db_content"));
 		final DBEntity entity = new DBEntity(type, version);
-		entity.id(id);
-		entity.name(name);
-		entity.content(content);
+		entity.setId(id);
+		entity.setName(name);
+		entity.setContent(content);
 		return entity;
 	}
 
@@ -270,29 +270,29 @@ public class H2DB implements DB<BooleanQuery> {
 
 				for (final DBEntity entity : entities) {
 					if (entity.isUpdate()) {
-						update.setString(1, entity.name());
-						update.setClob(2, new StringReader(entity.content()));
-						update.setString(3, entity.version());
-						update.setString(4, entity.id());
+						update.setString(1, entity.getName());
+						update.setClob(2, new StringReader(entity.getContent()));
+						update.setString(3, entity.getVersion());
+						update.setString(4, entity.getId());
 
 						update.execute();
 					} else {
-						insert.setString(1, entity.id());
-						insert.setString(2, entity.name());
-						insert.setString(3, entity.type());
-						insert.setClob(4, new StringReader(entity.content()));
-						insert.setString(5, entity.version());
+						insert.setString(1, entity.getId());
+						insert.setString(2, entity.getName());
+						insert.setString(3, entity.getType());
+						insert.setClob(4, new StringReader(entity.getContent()));
+						insert.setString(5, entity.getVersion());
 
 						insert.execute();
 					}
 
 					Document document = new Document();
-					document.add(new StringField("db_id", entity.id(), Field.Store.YES));
-					document.add(new StringField("db_type", entity.type(), Field.Store.YES));
+					document.add(new StringField("db_id", entity.getId(), Field.Store.YES));
+					document.add(new StringField("db_type", entity.getType(), Field.Store.YES));
 
 					addAttributes(entity, document);
 
-					writer.updateDocument(new Term("db_id", entity.id()), document);
+					writer.updateDocument(new Term("db_id", entity.getId()), document);
 				};
 
 				writer.flush();
@@ -323,26 +323,26 @@ public class H2DB implements DB<BooleanQuery> {
 
 			try (PreparedStatement ps = connection.prepareStatement(statement)) {
 				if (entity.isUpdate()) {
-					ps.setString(1, entity.name());
-					ps.setClob(2, new StringReader(entity.content()));
-					ps.setString(3, entity.version());
-					ps.setString(4, entity.id());
+					ps.setString(1, entity.getName());
+					ps.setClob(2, new StringReader(entity.getContent()));
+					ps.setString(3, entity.getVersion());
+					ps.setString(4, entity.getId());
 				} else {
-					ps.setString(1, entity.id());
-					ps.setString(2, entity.name());
-					ps.setString(3, entity.type());
-					ps.setClob(4, new StringReader(entity.content()));
-					ps.setString(5, entity.version());
+					ps.setString(1, entity.getId());
+					ps.setString(2, entity.getName());
+					ps.setString(3, entity.getType());
+					ps.setClob(4, new StringReader(entity.getContent()));
+					ps.setString(5, entity.getVersion());
 				}
 				ps.execute();
 
 				Document document = new Document();
-				document.add(new StringField("db_id", entity.id(), Field.Store.YES));
-				document.add(new StringField("db_type", entity.type(), Field.Store.YES));
+				document.add(new StringField("db_id", entity.getId(), Field.Store.YES));
+				document.add(new StringField("db_type", entity.getType(), Field.Store.YES));
 
 				addAttributes(entity, document);
 
-				writer.updateDocument(new Term("db_id", entity.id()), document);
+				writer.updateDocument(new Term("db_id", entity.getId()), document);
 				writer.flush();
 				writer.commit();
 				nrt_manager.maybeRefresh();
@@ -380,7 +380,7 @@ public class H2DB implements DB<BooleanQuery> {
 	}
 
 	private void addAttributes(final DBEntity entity, final Document document) throws SQLException {
-		for (DBAttribute attribute : entity.attributes().values()) {
+		for (DBAttribute attribute : entity.getAttributes().values()) {
 			addAttributeToDocument(document, attribute);
 		}
 	}

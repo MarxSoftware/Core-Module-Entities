@@ -230,17 +230,17 @@ public class MVStoreDB implements DB<BooleanQuery> {
 		try {
 			for (DBEntity entity : entities) {
 
-				Map<String, DBEntity> map = store.openMap(createTypeMapName(entity.type()));
+				Map<String, DBEntity> map = store.openMap(createTypeMapName(entity.getType()));
 
-				map.put(entity.id(), entity);
+				map.put(entity.getId(), entity);
 
 				Document document = new Document();
-				document.add(new StringField("db_id", entity.id(), Field.Store.YES));
-				document.add(new StringField("db_type", entity.type(), Field.Store.YES));
+				document.add(new StringField("db_id", entity.getId(), Field.Store.YES));
+				document.add(new StringField("db_type", entity.getType(), Field.Store.YES));
 
 				addAttributes(entity, document);
 
-				writer.updateDocument(new Term("db_id", entity.id()), document);
+				writer.updateDocument(new Term("db_id", entity.getId()), document);
 
 			}
 			store.commit();
@@ -296,7 +296,7 @@ public class MVStoreDB implements DB<BooleanQuery> {
 	}
 
 	private void addAttributes(final DBEntity entity, final Document document) {
-		for (DBAttribute attribute : entity.attributes().values()) {
+		for (DBAttribute attribute : entity.getAttributes().values()) {
 			addAttributeToDocument(document, attribute);
 		}
 	}
@@ -334,6 +334,7 @@ public class MVStoreDB implements DB<BooleanQuery> {
 	public void close() {
 		try {
 			defrag();
+			store.close();
 			writer.close();
 			nrt_manager.close();
 			directory.close();

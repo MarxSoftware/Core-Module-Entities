@@ -100,7 +100,7 @@ public class LuceneCriteria<T> implements Criteria<T> {
 			List<T> result = new ArrayList<>();
 			for (final DBEntity entity : entities) {
 //				result.add(annotationHelper.createInstance(entity));
-				result.add(serializer.deserialize(entity.version(), entity.content()).right);
+				result.add(serializer.deserialize(entity.getVersion(), entity.getContent()).right);
 			}
 			return Collections.unmodifiableList(result);
 		} catch (IOException ex) {

@@ -97,8 +97,8 @@ public class StoreImpl<T> implements Store<T> {
 	}
 
 	private T fromJSON(final DBEntity entity) {
-		final T right = serializer.deserialize(entity.version(), entity.content()).right;
-		annotationHelper.setId(right, entity.id());
+		final T right = serializer.deserialize(entity.getVersion(), entity.getContent()).right;
+		annotationHelper.setId(right, entity.getId());
 		return right;
 	}
 
@@ -136,8 +136,8 @@ public class StoreImpl<T> implements Store<T> {
 				Pair<String, String> content = serializer.serialize(entity);
 				DBEntity storeEntity = new DBEntity(type, content.left);
 				storeEntity.setUpdate(update);
-				storeEntity.id(id);
-				storeEntity.content(content.right);
+				storeEntity.setId(id);
+				storeEntity.setContent(content.right);
 
 				
 				for (final Field field : entity.getClass().getDeclaredFields()) {
@@ -169,7 +169,7 @@ public class StoreImpl<T> implements Store<T> {
 			}
 
 			db.batch(dbEntities);
-			Function<? super DBEntity, ? extends String> fnctn = (DBEntity t) -> t.id();
+			Function<? super DBEntity, ? extends String> fnctn = (DBEntity t) -> t.getId();
 
 			return dbEntities.stream().map(fnctn).collect(Collectors.toList());
 		} catch (IllegalAccessException illae) {
@@ -196,8 +196,8 @@ public class StoreImpl<T> implements Store<T> {
 			Pair<String, String> content = serializer.serialize(entity);
 			DBEntity storeEntity = new DBEntity(type, content.left);
 			storeEntity.setUpdate(update);
-			storeEntity.id(id);
-			storeEntity.content(content.right);
+			storeEntity.setId(id);
+			storeEntity.setContent(content.right);
 
 			for (final Field field : entity.getClass().getDeclaredFields()) {
 				if (field.isAnnotationPresent(com.thorstenmarx.webtools.api.entities.annotations.Field.class)) {
@@ -225,7 +225,7 @@ public class StoreImpl<T> implements Store<T> {
 			}
 			db.add(storeEntity);
 
-			return storeEntity.id();
+			return storeEntity.getId();
 		} catch (IllegalAccessException illae) {
 			throw new RuntimeException(illae);
 		}
